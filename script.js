@@ -38,26 +38,6 @@ const usePerishable = () => {
     } };
 };
 
-const useCursorTilt = ({ ref, tilt, bounds }) => {
-  const [rotate, setRotate] = useState([0, 0]); 
-  useDocumentEvent('mousemove', e => {
-    requestAnimationFrame(() => {
-      if (!ref.current) return;
-      const { left, top, width, height } = ref.current.getBoundingClientRect();
-      const [x, y] = [e.clientX, e.clientY];
-      const rect = bounds ?
-      { top: top - bounds, left: left - bounds, width: width + bounds * 2, height: height + bounds * 2 } :
-      { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
-
-      setRotate([
-      -(clamp(0, rect.height, y - rect.top) - rect.height / 2) / rect.height * tilt,
-      (clamp(0, rect.width, x - rect.left) - rect.width / 2) / rect.width * tilt]);
-
-    });
-  });
-  return rotate;
-};
-
 const Splash = memo(({ circles }) => {
   return /*#__PURE__*/(
     React.createElement("svg", { viewBox: "0 0 500 430", className: "splash" },
@@ -92,6 +72,20 @@ const Heart = ({ rotate }) => {
   const { items, add } = usePerishable();
   const {x, y} = rotate; 
   const offset = Math.atan2(y, x) / Math.PI * (PATH_LENGTH / 2) + PATH_LENGTH / 2;
+  
+  // Efecto de latido automático
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLove(prevLove => {
+        if (prevLove >= 1) {
+          return 0.5;
+        }
+        return prevLove + 0.1;
+      });
+    }, 800); // Late cada 800ms
+    
+    return () => clearInterval(interval);
+  }, []);
   
   useDocumentEvent('mouseup', () => {
     setPressed(pressed => {
@@ -130,9 +124,6 @@ const App = () => {
   const [showText, setShowText] = useState(false);
   const { items: confetti, add: addConfetti } = usePerishable();
   
-  const tiltRef = useRef();
-  const [rotateX, rotateY] = useCursorTilt({ ref: tiltRef, tilt: 30, bounds: 50 });
-
 
   const handleScreenClick = (e) => {
     if (e.target.closest('.heart')) {
@@ -174,36 +165,34 @@ const App = () => {
   return /*#__PURE__*/(
     React.createElement("div", { className: "app-container", onClick: handleScreenClick }, /*#__PURE__*/
       
-      React.createElement("div", { className: "heart-text-wrapper", ref: tiltRef }, /*#__PURE__*/
+      React.createElement("div", { className: "heart-text-wrapper" }, /*#__PURE__*/
         
         /*#__PURE__*/React.createElement("div", { 
-          className: "princess-title",
-          style: {
-            transform: `rotateX(${rotateX * 0.7}deg) rotateY(${rotateY * 0.7}deg) translateZ(40px)`
-          }
+          className: "princess-title"
         }, /*#__PURE__*/
           React.createElement("div", { className: "title-container" }, /*#__PURE__*/
-          React.createElement("span", { className: "star-left" }, "✨"),
-          React.createElement("span", { className: "title-text" }, "Para mi hermosa Iren 💖"),
-          React.createElement("span", { className: "star-right" }, "✨")
+            React.createElement("span", { className: "star-icon star-left" }, "✨"),
+            React.createElement("span", { className: "title-text" }, "Para mi hermosa Iren 💖"),
+            React.createElement("span", { className: "star-icon star-right" }, "✨")
           )
         ),
         
-        /*#__PURE__*/React.createElement(Heart, { rotate: { x: rotateX, y: rotateY } }), /*#__PURE__*/
+        /*#__PURE__*/React.createElement(Heart, { rotate: { x: 0, y: 0 } }), /*#__PURE__*/
         
         /*#__PURE__*/React.createElement("div", { 
             className: "love-text-container",
             style: {
                 opacity: showText ? 1 : 0,
-                transform: `translate3d(-50%, 0, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(60px) translateY(${showText ? 0 : 25}px)`
+                transform: `translate(-50%, ${showText ? 0 : 25}px)`
             }
         }, /*#__PURE__*/
-          React.createElement("div", { className: "love-text-line" }, "Te Amo"),
-          React.createElement("div", { className: "love-text-line" }, "mi bella princesa"),
+          React.createElement("div", { className: "love-text-line" }, "Te Amo mi bella princesa"),
+          React.createElement("div", { className: "love-text-line" }, "eres mi vida "),
+          React.createElement("div", { className: "love-text-line" }, "eres mi todo. 🌹💕"),
           React.createElement("div", { className: "love-image-wrapper" }, /*#__PURE__*/
             React.createElement("img", { 
               src: "love.jpg", 
-              alt: "Mi princesa",
+              alt: "Mi princesa Iren",
               className: "love-image"
             })
           )
@@ -215,18 +204,19 @@ const App = () => {
       ),
       
       /*#__PURE__*/React.createElement(React.Fragment, null,
-        [...Array(8)].map((_, i) => /*#__PURE__*/
+        [...Array(12)].map((_, i) => /*#__PURE__*/
           React.createElement("div", {
             key: i,
             className: "floating-star",
             style: {
-              '--star-delay': `${i * 0.5}s`,
-              '--star-size': `${Math.random() * 20 + 10}px`,
+              '--star-delay': `${i * 0.3}s`,
+              '--star-size': `${Math.random() * 15 + 8}px`,
               '--star-x': `${Math.random() * 100}%`,
               '--star-y': `${Math.random() * 100}%`,
-              '--star-duration': `${Math.random() * 3 + 5}s`
+              '--star-duration': `${Math.random() * 4 + 4}s`,
+              '--star-opacity': `${Math.random() * 0.4 + 0.1}`
             }
-          }, "⭐")
+          }, Math.random() > 0.5 ? "✨" : "⭐")
         )
       )
     )

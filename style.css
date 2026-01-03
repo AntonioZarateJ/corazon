@@ -15,13 +15,11 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  perspective: 1000px;
   position: relative;
 }
 
 .heart-text-wrapper {
   position: relative;
-  transform-style: preserve-3d;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,10 +34,18 @@ body {
   transform: translateX(-50%);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 15px;
   z-index: 10;
-  transition: transform 0.3s ease;
-  transform-style: preserve-3d;
+  width: 100%;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
 }
 
 .title-text {
@@ -67,31 +73,7 @@ body {
   animation: star-twinkle 2s infinite alternate;
   filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
   display: inline-block;
-}
-
-.star-icon:nth-child(1) {
-  animation-delay: 0.5s;
-}
-
-.star-icon:nth-child(3) {
-  animation-delay: 1s;
-}
-
-@keyframes star-twinkle {
-  0%, 100% {
-    opacity: 0.7;
-    transform: scale(1) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2) rotate(180deg);
-  }
-}
-
-.star-left, .star-right {
   font-size: 1.5rem;
-  animation: star-twinkle 2s infinite alternate;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
 }
 
 .star-left {
@@ -145,17 +127,37 @@ body {
   }
 }
 
+/* Corazón con latido automático */
 .heart {
-  perspective: 1000px;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border: none;
   background: none;
   cursor: pointer;
   outline: none;
   position: relative;
   margin-top: 20px;
+  animation: heartbeat 1.5s ease-in-out infinite;
 }
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .heart::after {
   content: "";
   position: absolute;
@@ -227,16 +229,15 @@ body {
   }
 }
 
-/* Contenedor de texto e imagen */
+/* Contenedor de texto e imagen - CORREGIDO para centrar */
 .love-text-container {
   position: absolute;
   top: 120%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, 0);
   text-align: center;
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
   z-index: 100;
-  perspective: 1000px;
   min-width: 280px;
   display: flex;
   flex-direction: column;
@@ -247,7 +248,6 @@ body {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 30px rgba(179, 77, 121, 0.3);
-  transform-style: preserve-3d;
 }
 
 .love-text-line {
@@ -342,30 +342,35 @@ body {
   }
   
   .title-text {
+    font-size: 1.7rem;
+  }
+  
+  .star-icon {
     font-size: 1.5rem;
   }
   
-  .star-left, .star-right {
-    font-size: 1.2rem;
+  .heart {
+    width: 110px;
+    height: 110px;
   }
   
   .love-text-container {
-    min-width: 240px;
+    min-width: 260px;
     padding: 0.8rem;
     top: 110%;
   }
   
   .love-text-line {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
   
   .love-text-line:nth-child(2) {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
   }
   
   .love-image {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
   }
   
   .floating-star {
@@ -376,35 +381,40 @@ body {
 @media (max-width: 480px) {
   .princess-title {
     top: -60px;
-    gap: 8px;
   }
   
   .title-text {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     letter-spacing: 1px;
   }
   
-  .star-left, .star-right {
-    font-size: 1rem;
+  .star-icon {
+    font-size: 1.3rem;
+  }
+  
+  .heart {
+    width: 100px;
+    height: 100px;
+    margin-top: 15px;
   }
   
   .love-text-container {
-    min-width: 200px;
+    min-width: 240px;
     padding: 0.6rem;
     top: 105%;
   }
   
   .love-text-line {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
   }
   
   .love-text-line:nth-child(2) {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
   }
   
   .love-image {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
   }
   
   .floating-star {
@@ -412,10 +422,8 @@ body {
   }
 }
 
-.princess-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  width: 100%;
+/* Reglas importantes para asegurar centrado */
+.love-text-container {
+  left: 50% !important;
+  transform: translate(-50%, var(--ty, 0)) !important;
 }
