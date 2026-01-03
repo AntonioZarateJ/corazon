@@ -1,0 +1,421 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  font-family: "Montserrat", sans-serif;
+  background-image: radial-gradient(circle, #edc9db, #f391c3);
+  overflow: hidden; 
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  perspective: 1000px;
+  position: relative;
+}
+
+.heart-text-wrapper {
+  position: relative;
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Título de la princesa */
+.princess-title {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 10;
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.title-text {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-shadow: 
+    0 2px 4px rgba(179, 77, 121, 0.5),
+    0 4px 8px rgba(179, 77, 121, 0.3),
+    0 8px 16px rgba(179, 77, 121, 0.2);
+  letter-spacing: 1px;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  background: linear-gradient(45deg, #ff80ab, #ff4081);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.star-icon {
+  animation: star-twinkle 2s infinite alternate;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+  display: inline-block;
+}
+
+.star-icon:nth-child(1) {
+  animation-delay: 0.5s;
+}
+
+.star-icon:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+.star-left, .star-right {
+  font-size: 1.5rem;
+  animation: star-twinkle 2s infinite alternate;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+}
+
+.star-left {
+  animation-delay: 0.5s;
+}
+
+.star-right {
+  animation-delay: 1s;
+}
+
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+/* Estrellas flotantes decorativas */
+.floating-star {
+  position: absolute;
+  font-size: var(--star-size, 20px);
+  top: var(--star-y, 50%);
+  left: var(--star-x, 50%);
+  animation: float-star var(--star-duration, 6s) ease-in-out infinite var(--star-delay, 0s);
+  opacity: 0.3;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes float-star {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg) scale(0.8);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translate(20px, -30px) rotate(90deg) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(-15px, -50px) rotate(180deg) scale(0.9);
+    opacity: 0.3;
+  }
+  75% {
+    transform: translate(25px, -20px) rotate(270deg) scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+.heart {
+  perspective: 1000px;
+  width: 100px;
+  height: 100px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  margin-top: 20px;
+}
+.heart::after {
+  content: "";
+  position: absolute;
+  border-radius: 100%;
+  left: 10%;
+  bottom: -20%;
+  width: 80%;
+  height: 20%;
+  background-color: rgba(179, 77, 121, 0.4);
+  filter: blur(5px);
+  transform: scale(var(--scale));
+}
+.heart svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.heart .inner-wrapper {
+  width: 100%;
+  height: 100%;
+  transform: scale(var(--scale));
+  transition: 0.1s ease-out;
+}
+.heart .splash {
+  width: 100%;
+  height: 100%;
+}
+.heart .splash path {
+  stroke: #ebadc8;
+  stroke-width: 0;
+  fill: none;
+  transform-origin: center;
+  animation-timing-function: linear;
+  animation-duration: 0.5s;
+  animation-name: splash;
+}
+.heart .heart-stroke {
+  fill: none;
+  stroke: white;
+  stroke-width: 20px;
+  stroke-dasharray: 300 1206;
+  stroke-linecap: round;
+}
+.heart .heart-layer {
+  transition: fill 0.3s ease-out;
+  fill: hsl(334deg, var(--lightness), 50%);
+  stroke: hsl(334deg, var(--lightness), 35%);
+  stroke-width: 10px;
+}
+.heart .heart-shine {
+  filter: blur(3px);
+}
+
+@keyframes splash {
+  0% {
+    transform: scale(0.5);
+    stroke-width: 10;
+  }
+  50% {
+    transform: scale(1.5);
+    stroke-width: 100;
+  }
+  100% {
+    transform: scale(2.5);
+    stroke-width: 1;
+  }
+}
+
+/* Contenedor de texto e imagen */
+.love-text-container {
+  position: absolute;
+  top: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  z-index: 100;
+  perspective: 1000px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(179, 77, 121, 0.3);
+  transform-style: preserve-3d;
+}
+
+.love-text-line {
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-shadow: 
+      0 1px 0 #d1d1d1,
+      0 2px 0 #c5c5c5,
+      0 3px 0 #b9b9b9,
+      0 4px 0 #adadad,
+      0 5px 0 #a1a1a1,
+      0 6px 1px rgba(0,0,0,.1),
+      0 0 5px rgba(0,0,0,.1),
+      0 1px 3px rgba(0,0,0,.3),
+      0 3px 5px rgba(0,0,0,.2),
+      0 5px 10px rgba(0,0,0,.25),
+      0 10px 10px rgba(0,0,0,.2),
+      0 20px 20px rgba(0,0,0,.15);
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  width: 100%;
+}
+
+.love-text-line:nth-child(2) {
+  color: #ff4081;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.love-image-wrapper {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #ff4081, #ff80ab);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.love-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 5px 20px rgba(255, 64, 129, 0.5);
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.love-image:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(255, 64, 129, 0.7);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 64, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(255, 64, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 64, 129, 0);
+  }
+}
+
+.confetti-heart {
+    position: absolute;
+    pointer-events: none;
+    animation: confetti-explosion var(--duration, 1.8s) ease-out forwards;
+}
+
+.confetti-heart path {
+    fill: var(--color);
+}
+
+@keyframes confetti-explosion {
+    0% {
+        transform: translate(0, 0) rotate(var(--start-rotation)) scale(var(--start-scale, 1));
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--end-x), var(--end-y)) rotate(var(--end-rotation)) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .princess-title {
+    top: -80px;
+  }
+  
+  .title-text {
+    font-size: 1.5rem;
+  }
+  
+  .star-left, .star-right {
+    font-size: 1.2rem;
+  }
+  
+  .love-text-container {
+    min-width: 240px;
+    padding: 0.8rem;
+    top: 110%;
+  }
+  
+  .love-text-line {
+    font-size: 1.8rem;
+  }
+  
+  .love-text-line:nth-child(2) {
+    font-size: 1.6rem;
+  }
+  
+  .love-image {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .floating-star {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .princess-title {
+    top: -60px;
+    gap: 8px;
+  }
+  
+  .title-text {
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+  }
+  
+  .star-left, .star-right {
+    font-size: 1rem;
+  }
+  
+  .love-text-container {
+    min-width: 200px;
+    padding: 0.6rem;
+    top: 105%;
+  }
+  
+  .love-text-line {
+    font-size: 1.5rem;
+  }
+  
+  .love-text-line:nth-child(2) {
+    font-size: 1.3rem;
+  }
+  
+  .love-image {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .floating-star {
+    font-size: 14px;
+  }
+}
+
+.princess-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+}
