@@ -82,7 +82,7 @@ const Heart = ({ rotate }) => {
         }
         return prevLove + 0.1;
       });
-    }, 800); // Late cada 800ms
+    }, 800);
     
     return () => clearInterval(interval);
   }, []);
@@ -124,6 +124,9 @@ const App = () => {
   const [showText, setShowText] = useState(false);
   const { items: confetti, add: addConfetti } = usePerishable();
   
+  // Calcular clicks restantes
+  const remainingClicks = Math.max(0, CLICKS_TO_ACTIVATE - clickCount);
+  const progressPercentage = (clickCount / CLICKS_TO_ACTIVATE) * 100;
 
   const handleScreenClick = (e) => {
     if (e.target.closest('.heart')) {
@@ -179,17 +182,50 @@ const App = () => {
         
         /*#__PURE__*/React.createElement(Heart, { rotate: { x: 0, y: 0 } }), /*#__PURE__*/
         
+        /* INDICADOR + CONTADOR COMBINADO - CORREGIDO */
+        !showText ? /*#__PURE__*/React.createElement("div", { 
+          className: "hint-counter-container"
+        }, /*#__PURE__*/
+          React.createElement("div", { className: "hint-section" }, /*#__PURE__*/
+            React.createElement("div", { className: "hint-text" }, "Descubre el mensaje secreto"),
+            React.createElement("div", { className: "hint-arrow" }, "👇")
+          ),
+          
+          React.createElement("div", { className: "counter-section" }, /*#__PURE__*/
+            React.createElement("div", { className: "progress-bar" }, /*#__PURE__*/
+              React.createElement("div", { 
+                className: "progress-fill",
+                style: { width: `${progressPercentage}%` }
+              })
+            ),
+            React.createElement("div", { className: "counter-text" }, /*#__PURE__*/
+              remainingClicks > 0 
+                ? `${remainingClicks} toque${remainingClicks > 1 ? 's' : ''} más`
+                : "¡Listo! ✨"
+            ),
+            React.createElement("div", { className: "hearts-progress" }, /*#__PURE__*/
+              [...Array(CLICKS_TO_ACTIVATE)].map((_, i) => /*#__PURE__*/
+                React.createElement("span", { 
+                  key: i, 
+                  className: `progress-heart ${i < clickCount ? 'active' : ''}` 
+                }, i < clickCount ? "💖" : "🤍")
+              )
+            )
+          )
+        ) : null,
+        
         /*#__PURE__*/React.createElement("div", { 
             className: "love-text-container",
             style: {
                 opacity: showText ? 1 : 0,
                 transform: `translate(-50%, ${showText ? 0 : 25}px)`
             }
-        }, /*#__PURE__*/
+        }, 
           React.createElement("div", { className: "love-text-line" }, "Te Amo mi bella princesa"),
-          React.createElement("div", { className: "love-text-line" }, "eres mi vida "),
-          React.createElement("div", { className: "love-text-line" }, "eres mi todo. 🌹💕"),
-          React.createElement("div", { className: "love-image-wrapper" }, /*#__PURE__*/
+          React.createElement("div", { className: "love-text-line" }, "eres mi vida, "),
+          React.createElement("div", { className: "love-text-line" }, "eres mi todo,"),
+          React.createElement("div", { className: "love-text-line" }, "eres lo que mas amo 🌹💕."),
+          React.createElement("div", { className: "love-image-wrapper" }, 
             React.createElement("img", { 
               src: "love.jpg", 
               alt: "Mi princesa Iren",

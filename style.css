@@ -427,3 +427,175 @@ body {
   left: 50% !important;
   transform: translate(-50%, var(--ty, 0)) !important;
 }
+
+/* Agrega esto al final de tu CSS actual */
+
+/* CONTENEDOR COMBINADO */
+.hint-counter-container {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 50;
+  transition: opacity 0.5s ease;
+  min-width: 300px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 25px rgba(179, 77, 121, 0.3);
+  animation: float-container 4s ease-in-out infinite;
+}
+
+@keyframes float-container {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+/* SECCIÓN DE INDICADOR */
+.hint-section {
+  margin-bottom: 12px;
+}
+
+.hint-text {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 4px rgba(179, 77, 121, 0.5);
+}
+
+.hint-arrow {
+  font-size: 1.8rem;
+  animation: bounce-arrow 1.2s ease-in-out infinite;
+  filter: drop-shadow(0 2px 5px rgba(179, 77, 121, 0.5));
+}
+
+@keyframes bounce-arrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* SECCIÓN DE CONTADOR */
+.counter-section {
+  margin-top: 10px;
+}
+
+/* BARRA DE PROGRESO */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff80ab, #ff4081);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
+}
+
+/* TEXTO DEL CONTADOR */
+.counter-text {
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  min-height: 24px;
+}
+
+/* CORAZONES DE PROGRESO */
+.hearts-progress {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.progress-heart {
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.progress-heart.active {
+  animation: heart-pop 0.4s ease;
+  filter: drop-shadow(0 0 8px rgba(255, 64, 129, 0.7));
+}
+
+@keyframes heart-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* Efecto cuando se completa */
+.hint-counter-container.completed .counter-text {
+  color: #ff4081;
+  font-weight: 700;
+  animation: text-glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes text-glow {
+  from { text-shadow: 0 0 5px rgba(255, 64, 129, 0.5); }
+  to { text-shadow: 0 0 15px rgba(255, 64, 129, 0.8); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hint-counter-container {
+    top: 65%;
+    min-width: 280px;
+    padding: 12px;
+  }
+  
+  .hint-text {
+    font-size: 1rem;
+  }
+  
+  .hint-arrow {
+    font-size: 1.5rem;
+  }
+  
+  .counter-text {
+    font-size: 0.9rem;
+  }
+  
+  .progress-heart {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hint-counter-container {
+    top: 60%;
+    min-width: 250px;
+    padding: 10px;
+  }
+  
+  .hint-text {
+    font-size: 0.9rem;
+  }
+  
+  .hint-arrow {
+    font-size: 1.3rem;
+  }
+  
+  .counter-text {
+    font-size: 0.85rem;
+  }
+  
+  .progress-heart {
+    font-size: 1.1rem;
+  }
+  
+  .progress-bar {
+    height: 6px;
+  }
+}
